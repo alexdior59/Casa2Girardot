@@ -1,5 +1,6 @@
 package org.example.casa2girardot.Controllers;
 
+import jakarta.validation.Valid;
 import org.example.casa2girardot.Dtos.RegistroTenenciaCreateDTO;
 import org.example.casa2girardot.Dtos.RegistroTenenciaDTO;
 import org.example.casa2girardot.Dtos.RegistroTenenciaUpdateDTO;
@@ -99,7 +100,7 @@ public class RegistroTenenciaController {
 
     // Crear registro manualmente
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody RegistroTenenciaCreateDTO dto) {
+    public ResponseEntity<?> crear(@Valid @RequestBody RegistroTenenciaCreateDTO dto) {
         try {
             RegistroTenenciaDTO creado = registroTenenciaService.crear(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(creado);

@@ -1,5 +1,6 @@
 package org.example.casa2girardot.Controllers;
 
+import jakarta.validation.Valid;
 import org.example.casa2girardot.Dtos.AuthResponseDTO;
 import org.example.casa2girardot.Dtos.LoginDTO;
 import org.example.casa2girardot.Security.CustomUserDetailsService;
@@ -25,7 +26,7 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginDTO loginRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginDTO loginRequest) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())

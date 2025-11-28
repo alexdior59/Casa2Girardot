@@ -1,5 +1,6 @@
 package org.example.casa2girardot.Controllers;
 
+import jakarta.validation.Valid;
 import org.example.casa2girardot.Dtos.ArrendatarioCreateDTO;
 import org.example.casa2girardot.Dtos.ArrendatarioDTO;
 import org.example.casa2girardot.Dtos.ArrendatarioUpdateDTO;
@@ -69,7 +70,7 @@ public class ArrendatarioController {
 
     // Crear arrendatario
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody ArrendatarioCreateDTO dto) {
+    public ResponseEntity<?> crear(@Valid @RequestBody ArrendatarioCreateDTO dto) {
         try {
             ArrendatarioDTO creado = arrendatarioService.crear(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(creado);

@@ -1,5 +1,6 @@
 package org.example.casa2girardot.Controllers;
 
+import jakarta.validation.Valid;
 import org.example.casa2girardot.Dtos.NovedadCreateDTO;
 import org.example.casa2girardot.Dtos.NovedadDTO;
 import org.example.casa2girardot.Services.NovedadService;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -33,12 +36,11 @@ public class NovedadController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registrar(@RequestBody NovedadCreateDTO dto) {
-        try {
-            NovedadDTO creada = novedadService.registrarNovedad(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(creada);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<NovedadDTO> registrar(@RequestBody NovedadCreateDTO dto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        NovedadDTO creada = novedadService.registrarNovedad(dto, email);
+        return ResponseEntity.status(HttpStatus.CREATED).body(creada);
     }
 }

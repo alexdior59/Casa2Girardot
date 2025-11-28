@@ -46,12 +46,13 @@ public class NovedadService {
     }
 
     @Transactional
-    public NovedadDTO registrarNovedad(NovedadCreateDTO dto) {
+    public NovedadDTO registrarNovedad(NovedadCreateDTO dto, String emailAdminLogueado) {
+
         MedioPago medioPago = medioPagoRepository.findById(dto.getIdMedioPago())
                 .orElseThrow(() -> new RuntimeException("Medio de pago no encontrado"));
 
-        Administrador admin = administradorRepository.findById(dto.getIdAdministrador())
-                .orElseThrow(() -> new RuntimeException("Administrador no encontrado"));
+        Administrador admin = administradorRepository.findByEmail(emailAdminLogueado)
+                .orElseThrow(() -> new RuntimeException("Administrador no encontrado (Error de seguridad)"));
 
         Inmueble inmueble = null;
         if (dto.getIdInmueble() != null) {
@@ -82,6 +83,7 @@ public class NovedadService {
                 .descripcion(dto.getDescripcion())
                 .fecha(LocalDateTime.now())
                 .numeroReferencia(dto.getNumeroReferencia())
+                .idAdministrador(admin)
                 .build();
 
         return convertirADTO(novedadRepository.save(novedad));
