@@ -1,5 +1,6 @@
 package org.example.casa2girardot.Controllers;
 
+import jakarta.validation.Valid;
 import org.example.casa2girardot.Dtos.FacturaDTO;
 import org.example.casa2girardot.Dtos.PagoFacturaDTO;
 import org.example.casa2girardot.Services.FacturaService;
@@ -29,24 +30,16 @@ public class FacturaController {
     }
 
     @PostMapping("/generar/{idInmueble}")
-    public ResponseEntity<?> generarFactura(@PathVariable Integer idInmueble) {
-        try {
-            FacturaDTO factura = facturaService.generarFactura(idInmueble);
-            return ResponseEntity.status(HttpStatus.CREATED).body(factura);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<FacturaDTO> generarFactura(@PathVariable Integer idInmueble) {
+        FacturaDTO factura = facturaService.generarFactura(idInmueble);
+        return ResponseEntity.status(HttpStatus.CREATED).body(factura);
     }
 
     @PostMapping("/{idFactura}/pagar")
-    public ResponseEntity<?> registrarPago(
+    public ResponseEntity<FacturaDTO> registrarPago(
             @PathVariable Integer idFactura,
-            @RequestBody PagoFacturaDTO pagoDTO) {
-        try {
-            FacturaDTO factura = facturaService.registrarPago(idFactura, pagoDTO);
-            return ResponseEntity.ok(factura);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+            @Valid @RequestBody PagoFacturaDTO pagoDTO) {
+        FacturaDTO factura = facturaService.registrarPago(idFactura, pagoDTO);
+        return ResponseEntity.ok(factura);
     }
 }

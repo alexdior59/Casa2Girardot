@@ -28,15 +28,11 @@ public class NovedadController {
 
     @GetMapping("/inmueble/{idInmueble}")
     public ResponseEntity<List<NovedadDTO>> obtenerPorInmueble(@PathVariable Integer idInmueble) {
-        try {
-            return ResponseEntity.ok(novedadService.obtenerPorInmueble(idInmueble));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(novedadService.obtenerPorInmueble(idInmueble));
     }
 
     @PostMapping
-    public ResponseEntity<NovedadDTO> registrar(@RequestBody NovedadCreateDTO dto) {
+    public ResponseEntity<NovedadDTO> registrar(@Valid @RequestBody NovedadCreateDTO dto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
